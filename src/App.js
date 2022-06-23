@@ -13,13 +13,24 @@ export default function App() {
   const [countRolls, setCountRolls] = React.useState(0);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const { elapsedTime, reset } = useElapsedTime({ isPlaying });
+
   const [highScoreRoll, setHighScoreRoll] = React.useState(Infinity);
   const [highScoreTime, setHighScoreTime] = React.useState(Infinity);
+
+  React.useEffect(() => {
+    const data = localStorage.getItem("HIGH_SCORE_TIME");
+    if (data) setHighScoreTime(data);
+  }, []);
+
+  React.useEffect(() => {
+    localStorage.setItem("HIGH_SCORE_TIME", highScoreTime);
+  });
 
   React.useEffect(() => {
     const allHeld = dice.every((die) => die.isHeld);
     const firstValue = dice[0].value;
     const allSameValue = dice.every((die) => die.value === firstValue);
+
     if (allHeld && allSameValue) {
       setTenzies(true);
       setIsPlaying(false);
@@ -30,8 +41,8 @@ export default function App() {
       });
 
       setHighScoreTime((prevHighScore) => {
-        if (prevHighScore < elapsedTime) return prevHighScore.toFixed(2);
-        else return elapsedTime.toFixed(2);
+        if (prevHighScore < elapsedTime) return prevHighScore;
+        else return elapsedTime;
       });
     }
   }, [dice]);
@@ -96,7 +107,7 @@ export default function App() {
       {tenzies && <Confetti />}
       <h1 className="title">Tenzies</h1>
       <h2 className="highscore-time">
-        Current highscore: {highScoreTime} seconds
+        Current highscore: {Number(highScoreTime).toFixed(3)} seconds
       </h2>
       <h2 className="highscore-roll">
         Current lowest rolls: {highScoreRoll} rolls
