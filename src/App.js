@@ -18,12 +18,15 @@ export default function App() {
   const [highScoreTime, setHighScoreTime] = React.useState(Infinity);
 
   React.useEffect(() => {
-    const data = localStorage.getItem("HIGH_SCORE_TIME");
-    if (data) setHighScoreTime(data);
+    const localScoreTime = localStorage.getItem("HIGH_SCORE_TIME");
+    const localScoreRoll = localStorage.getItem("HIGH_SCORE_ROLL");
+    if (localScoreTime) setHighScoreTime(localScoreTime);
+    if (localScoreRoll) setHighScoreRoll(localScoreRoll);
   }, []);
 
   React.useEffect(() => {
     localStorage.setItem("HIGH_SCORE_TIME", highScoreTime);
+    localStorage.setItem("HIGH_SCORE_ROLL", highScoreRoll);
   });
 
   React.useEffect(() => {
@@ -107,11 +110,9 @@ export default function App() {
       {tenzies && <Confetti />}
       <h1 className="title">Tenzies</h1>
       <h2 className="highscore-time">
-        Current highscore: {Number(highScoreTime).toFixed(3)} seconds
+        Fastest Time: {Number(highScoreTime).toFixed(3)} seconds
       </h2>
-      <h2 className="highscore-roll">
-        Current lowest rolls: {highScoreRoll} rolls
-      </h2>
+      <h2 className="highscore-roll">Lowest Rolls: {highScoreRoll} rolls</h2>
       <p className="instructions">
         Roll until all dice are the same. Click die to hold its value from being
         rerolled{" "}
