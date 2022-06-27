@@ -109,10 +109,14 @@ export default function App() {
     <main>
       {tenzies && <Confetti />}
       <h1 className="title">Tenzies</h1>
-      <h2 className="highscore-time">
-        Fastest Time: {Number(highScoreTime).toFixed(3)} seconds
-      </h2>
-      <h2 className="highscore-roll">Lowest Rolls: {highScoreRoll} rolls</h2>
+      {highScoreTime !== Infinity && (
+        <p className="highscore-time">
+          Fastest Time: {Number(highScoreTime).toFixed(3)} seconds
+        </p>
+      )}
+      {highScoreRoll !== Infinity && (
+        <p className="highscore-roll">Lowest Rolls: {highScoreRoll} rolls</p>
+      )}
       <p className="instructions">
         Roll until all dice are the same. Click die to hold its value from being
         rerolled{" "}

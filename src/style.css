@@ -68,3 +68,9 @@ body {
     justify-content: center;
 }
 
+.highscore-time, .highscore-roll{
+    font-family: 'Source Code Pro', monospace;
+    display:flex;
+    justify-content: center;
+}
+
