@@ -109,12 +109,12 @@ export default function App() {
     <main>
       {tenzies && <Confetti />}
       <h1 className="title">Tenzies</h1>
-      {highScoreTime !== Infinity && (
+      {highScoreTime != Infinity && (
         <p className="highscore-time">
           Fastest Time: {Number(highScoreTime).toFixed(3)} seconds
         </p>
       )}
-      {highScoreRoll !== Infinity && (
+      {highScoreRoll != Infinity && (
         <p className="highscore-roll">Lowest Rolls: {highScoreRoll} rolls</p>
       )}
       <p className="instructions">
