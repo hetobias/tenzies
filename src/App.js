@@ -13,13 +13,27 @@ export default function App() {
   const [countRolls, setCountRolls] = React.useState(0);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const { elapsedTime, reset } = useElapsedTime({ isPlaying });
+
   const [highScoreRoll, setHighScoreRoll] = React.useState(Infinity);
   const [highScoreTime, setHighScoreTime] = React.useState(Infinity);
+
+  React.useEffect(() => {
+    const localScoreTime = localStorage.getItem("HIGH_SCORE_TIME");
+    const localScoreRoll = localStorage.getItem("HIGH_SCORE_ROLL");
+    if (localScoreTime) setHighScoreTime(localScoreTime);
+    if (localScoreRoll) setHighScoreRoll(localScoreRoll);
+  }, []);
+
+  React.useEffect(() => {
+    localStorage.setItem("HIGH_SCORE_TIME", highScoreTime);
+    localStorage.setItem("HIGH_SCORE_ROLL", highScoreRoll);
+  });
 
   React.useEffect(() => {
     const allHeld = dice.every((die) => die.isHeld);
     const firstValue = dice[0].value;
     const allSameValue = dice.every((die) => die.value === firstValue);
+
     if (allHeld && allSameValue) {
       setTenzies(true);
       setIsPlaying(false);
@@ -30,8 +44,8 @@ export default function App() {
       });
 
       setHighScoreTime((prevHighScore) => {
-        if (prevHighScore < elapsedTime) return prevHighScore.toFixed(2);
-        else return elapsedTime.toFixed(2);
+        if (prevHighScore < elapsedTime) return prevHighScore;
+        else return elapsedTime;
       });
     }
   }, [dice]);
@@ -96,11 +110,9 @@ export default function App() {
       {tenzies && <Confetti />}
       <h1 className="title">Tenzies</h1>
       <h2 className="highscore-time">
-        Current highscore: {highScoreTime} seconds
+        Fastest Time: {Number(highScoreTime).toFixed(3)} seconds
       </h2>
-      <h2 className="highscore-roll">
-        Current lowest rolls: {highScoreRoll} rolls
-      </h2>
+      <h2 className="highscore-roll">Lowest Rolls: {highScoreRoll} rolls</h2>
       <p className="instructions">
         Roll until all dice are the same. Click die to hold its value from being
         rerolled{" "}
